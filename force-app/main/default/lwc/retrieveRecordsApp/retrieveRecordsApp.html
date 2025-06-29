@@ -3,9 +3,17 @@
         <lightning-layout-item size="3">
             <article class="slds-box slds-theme_shade slds-var-m-right_small">
                 <h1 class="slds-text-heading_small slds-text-align_center slds-var-m-bottom_medium">
-                    Build Query
+                    Build Query (SOQL)
                 </h1>
-                <!-- FORM GOES HERE -->
+                <form onsubmit={handleQuerySubmit}>
+                    <lightning-textarea name="fields" type="text" label="SELECT" onchange={handleChange} placeholder="e.g. Id, Name, ... , Status" required></lightning-textarea>
+                    <lightning-input name="SObjectApiName" type="text" label="FROM" onchange={handleChange}  placeholder="e.g. Account" required></lightning-input>
+                    <lightning-input name="filters" type="text" label="WHERE" onchange={handleChange} placeholder="e.g. Status = 'Closed'"></lightning-input>
+                    <lightning-input name="noRecords" type="number" label="LIMIT" onchange={handleChange} placeholder="e.g. 10"></lightning-input>
+                    <div class="slds-var-m-top_medium">
+                        <button type="submit" class="slds-button slds-button_brand slds-large-size_5-of-5">Query Records</button>
+                    </div>
+                </form>
             </article>
         </lightning-layout-item>
         <lightning-layout-item size="9">
