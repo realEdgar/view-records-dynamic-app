@@ -10,6 +10,11 @@
                     <lightning-input name="SObjectApiName" type="text" label="FROM" onchange={handleChange}  placeholder="e.g. Account" required></lightning-input>
                     <lightning-textarea name="filters" type="text" label="WHERE" onchange={handleChange} placeholder="e.g. Status = 'Closed'"></lightning-textarea>
                     <lightning-input name="noRecords" type="number" label="LIMIT" onchange={handleChange} placeholder="e.g. 10"></lightning-input>
+                    <template lwc:if={isError}>
+                        <p class="slds-var-p-around_medium slds-text-color_error">
+                            {errorMessage}
+                        </p>
+                    </template>
                     <div class="slds-var-m-top_medium">
                         <button type="submit" class="slds-button slds-button_brand slds-large-size_5-of-5">Query Records</button>
                     </div>

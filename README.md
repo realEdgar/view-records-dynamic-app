@@ -49,4 +49,11 @@
 - Update the LWC that uses the apex method.
     - add a new method that manage the response from the database.
 
+### Build 4
+- Display the error from the server
+    - in the UI user should be able to see the error from the server which specifies the error in the query
+    - if there is an error, and the user try again with the proper query, the error should be gone.
+- Apply best practices:
+    - Store possible statuses from server in a const out of the component
+
 TBD

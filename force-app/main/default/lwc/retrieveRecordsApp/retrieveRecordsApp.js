@@ -1,11 +1,16 @@
 import { LightningElement } from 'lwc';
 import retrieveRecords from '@salesforce/apex/RetrieveRecordsAppController.retrieveRecords';
 
+const SUCCESS_STATUS = 'SUCCESS';
+const ERROR_STATUS = 'ERROR'
+
 export default class RetrieveRecordsApp extends LightningElement {
     fields;
     SObjectApiName;
     filters;
     noRecords;
+    isError = false;
+    errorMessage;
 
     handleChange(event){
         const fieldName = event.target.name;
@@ -26,15 +31,14 @@ export default class RetrieveRecordsApp extends LightningElement {
         const response = await retrieveRecords(params);
         const result = JSON.parse(response);
 
-        if(result.status === 'SUCCESS'){
-            const test = result.data[0];
-            for(const key in test){
-                console.log(key, test[key]);
-            }
+        if(result.status === SUCCESS_STATUS){
+            this.isError = false;
+            this.errorMessage = '';
+            console.log(JSON.stringify(result.data));
             // TBD: Manage success result
-        } else if(result.status === 'ERROR'){
-            console.log(result.errorMessage);
-            // TBD: Manage error result
+        } else if(result.status === ERROR_STATUS){
+            this.isError = true;
+            this.errorMessage = result.errorMessage;
         }
     }
 }
