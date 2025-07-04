@@ -32,6 +32,28 @@
                         </header>
                         <lightning-datatable key-field="Id" data={mainData} columns={mainDataCols} hide-checkbox-column
                             show-row-number-column onrowaction={handleRowAction}></lightning-datatable>
+                        <template for:each={mainData} for:item="record">
+                            <template lwc:if={record.childRecords.length}>
+                                <article class="slds-box slds-theme_default slds-var-m-around_small" key={record.Id}>
+                                    <h4 class="slds-text-heading_small">
+                                        Parent {SObjectApiName} Record - <code>{record.Id}</code>
+                                    </h4>
+                                    <template for:each={record.childRecords} for:item="childRecord">
+                                        <template lwc:if={childRecord.data.length}>
+                                            <section class="slds-var-m-vertical_small" key={childRecord.object}>
+                                                <header class="slds-box slds-theme_shade">
+                                                    <h3 class="slds-text-heading_small">
+                                                        Related {childRecord.object} ({childRecord.data.length})
+                                                    </h3>
+                                                </header>
+                                                <lightning-datatable key-field="Id" data={childRecord.data} columns={childRecord.cols}
+                                                    hide-checkbox-column show-row-number-column onrowaction={handleRowAction}></lightning-datatable>
+                                            </section>
+                                        </template>
+                                    </template>
+                                </article>
+                            </template>
+                        </template>
                     </template>
                     <template lwc:else>
                         <section class="slds-box slds-theme_default slds-align_absolute-center" style="height: 10rem;">

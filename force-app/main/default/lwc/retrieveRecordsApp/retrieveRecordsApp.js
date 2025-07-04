@@ -50,7 +50,8 @@ export default class RetrieveRecordsApp extends NavigationMixin(LightningElement
             this.isError = false;
             this.errorMessage = '';
             this.configObject = this.buildConfigObject();
-            this.mainData = this.processDataForParentReference(result.data, this.mainDataCols);
+            const initialProcess = this.processDataForParentReference(result.data, this.mainDataCols);
+            this.mainData = this.processDataForChildRelatedRecords(initialProcess);
         } else if(result.status === ERROR_STATUS){
             this.isError = true;
             this.errorMessage = result.errorMessage;
@@ -142,6 +143,26 @@ export default class RetrieveRecordsApp extends NavigationMixin(LightningElement
                     newRecord[parentField.fieldName] = cellValue; // 4. newRecord.AccountName = newRecord.Account.Name
                 });
             }
+            return newRecord;
+        });
+    }
+    processDataForChildRelatedRecords(data){
+        return data.map(record => {
+            const newRecord = { ...record };
+            newRecord['childRecords'] = [];
+            if(this.configObject.subqueries.length > 0){
+                const childRecords = this.configObject.subqueries.map(query => {
+                    const childRecord = {};
+                    childRecord.cols = this.mapFields(query.fields);
+                    childRecord.data = this.processDataForParentReference(newRecord[query.object]?.records || [], childRecord.cols);
+                    childRecord.object = query.object;
+
+                    return childRecord;
+                });
+
+                newRecord.childRecords = childRecords;
+            }
+
             return newRecord;
         });
     }

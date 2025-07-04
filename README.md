@@ -96,4 +96,13 @@
 - Build a method that process data when the request includes references to partent objects e.g. Account.Name, Account.Type, Owner.Profile.Name
     - users should be able to see this values in the table
     - update the current data process to consider this on main data.
-TBD
+
+### Build 9
+- Display child related records when requested.
+    - display a `lightning-datatable` per related list of records
+        - Every table should include a header:
+            - Show the related object, the number of related records and the parent id.
+        - display requested fields as columns
+        - includes actions to view and edit the record selected
+
+## Build Completed
