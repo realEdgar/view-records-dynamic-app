@@ -73,4 +73,18 @@
                 objectName: '', string
             }
         `
+
+### Build 6
+- When Page is loaded show a message in the right side:
+    - Message: "There are no data requested, please build a query to request some data."
+- Display data from main object requested.
+    - use lightning-datatable
+        - use data retrieved from server
+        - build columns from `configObject.fields`
+            - build a method to process the fields, so then it can be used for subqueries fields.
+        - Display conditions:
+            - if there is data: display datatable
+            - if there is no data show the following message: "There is no data from object `<Object Name>`"
+    - include a header that show the main object Api Name and the records retrieved:
+        - examples: "Account (2)" | "Custom_Object__c (5)"
 TBD

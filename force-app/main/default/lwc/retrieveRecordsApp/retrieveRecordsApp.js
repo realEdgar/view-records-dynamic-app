@@ -1,6 +1,5 @@
 import { LightningElement, track } from 'lwc';
 import retrieveRecords from '@salesforce/apex/RetrieveRecordsAppController.retrieveRecords';
-import Name from '@salesforce/schema/Account.Name';
 
 const SUCCESS_STATUS = 'SUCCESS';
 const ERROR_STATUS = 'ERROR'
@@ -12,8 +11,14 @@ export default class RetrieveRecordsApp extends LightningElement {
     noRecords;
     isError = false;
     errorMessage;
+    dataRequested;
 
     @track configObject;
+    @track mainData = [];
+
+    get mainDataCols(){
+        return this.mapFields(this.configObject?.fields || []);
+    }
 
     handleChange(event){
         const fieldName = event.target.name;
@@ -33,14 +38,18 @@ export default class RetrieveRecordsApp extends LightningElement {
     async responseManager(params){
         const response = await retrieveRecords(params);
         const result = JSON.parse(response);
+        this.dataRequested = true;
 
         if(result.status === SUCCESS_STATUS){
             this.isError = false;
             this.errorMessage = '';
             this.configObject = this.buildConfigObject();
+            this.mainData = result.data;
         } else if(result.status === ERROR_STATUS){
             this.isError = true;
             this.errorMessage = result.errorMessage;
+            this.mainData = [];
+            this.dataRequested = false;
         }
     }
     buildConfigObject(){
@@ -80,5 +89,14 @@ export default class RetrieveRecordsApp extends LightningElement {
         configObject.objectName = this.SObjectApiName;
 
         return configObject;
+    }
+    mapFields(fields){
+        return fields.map(field => {
+            return {
+                label: field,
+                fieldName: field,
+                wrapText: true
+            }
+        })
     }
 }
