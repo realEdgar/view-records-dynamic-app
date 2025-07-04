@@ -56,4 +56,21 @@
 - Apply best practices:
     - Store possible statuses from server in a const out of the component
 
+### Build 5
+- Create a method that setup the configuration of the data request (string stored in the `fields` property):
+    - Scenarios to cover:
+        - fields from the main objects
+        - subqueries
+    - considere that all data will be displayed on tables:
+        - main table, for the fields associated with the main object
+        - ona table per requested related table.
+    - Object example:
+        `
+            {
+                fields: [], <string>
+                subqueries: [], <object>:
+                    { object, fields, whereClause, limitClause }
+                objectName: '', string
+            }
+        `
 TBD
