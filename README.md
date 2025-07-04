@@ -87,4 +87,8 @@
             - if there is no data show the following message: "There is no data from object `<Object Name>`"
     - include a header that show the main object Api Name and the records retrieved:
         - examples: "Account (2)" | "Custom_Object__c (5)"
+
+### Build 7
+- Include actions column in the datatable, so users can edit or view any record
+    - Use NavigationMixin for the navigation
 TBD

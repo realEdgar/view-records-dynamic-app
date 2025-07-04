@@ -31,7 +31,7 @@
                             </h3>
                         </header>
                         <lightning-datatable key-field="Id" data={mainData} columns={mainDataCols} hide-checkbox-column
-                            show-row-number-column></lightning-datatable>
+                            show-row-number-column onrowaction={handleRowAction}></lightning-datatable>
                     </template>
                     <template lwc:else>
                         <section class="slds-box slds-theme_default slds-align_absolute-center" style="height: 10rem;">

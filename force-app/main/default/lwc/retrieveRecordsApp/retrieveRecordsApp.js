@@ -1,10 +1,16 @@
 import { LightningElement, track } from 'lwc';
 import retrieveRecords from '@salesforce/apex/RetrieveRecordsAppController.retrieveRecords';
+import { NavigationMixin } from 'lightning/navigation';
 
 const SUCCESS_STATUS = 'SUCCESS';
 const ERROR_STATUS = 'ERROR'
 
-export default class RetrieveRecordsApp extends LightningElement {
+const ACTIONS = [
+    { label: 'View', name: 'view' },
+    { label: 'Edit', name: 'edit' },
+];
+
+export default class RetrieveRecordsApp extends NavigationMixin(LightningElement) {
     fields;
     SObjectApiName;
     filters;
@@ -91,12 +97,29 @@ export default class RetrieveRecordsApp extends LightningElement {
         return configObject;
     }
     mapFields(fields){
-        return fields.map(field => {
+        const actionsCol = { type: 'action', typeAttributes: { rowActions: ACTIONS, menuAlignment: 'auto' } }
+        const tableCols = fields.map(field => {
             return {
                 label: field,
                 fieldName: field,
                 wrapText: true
             }
-        })
+        });
+        return [...tableCols, actionsCol];
+    }
+    handleRowAction(event){
+        const actionName = event.detail.action.name;
+        const recordId = event.detail.row.Id;
+        this.navigateToRecord(recordId, actionName);
+    }
+    navigateToRecord(recordId, actionName){
+        const pageReference = {
+            type: 'standard__recordPage',
+            attributes: {
+                recordId,
+                actionName
+            }
+        }
+        this[NavigationMixin.Navigate](pageReference);
     }
 }
