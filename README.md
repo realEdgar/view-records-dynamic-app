@@ -91,4 +91,9 @@
 ### Build 7
 - Include actions column in the datatable, so users can edit or view any record
     - Use NavigationMixin for the navigation
+
+### Build 8
+- Build a method that process data when the request includes references to partent objects e.g. Account.Name, Account.Type, Owner.Profile.Name
+    - users should be able to see this values in the table
+    - update the current data process to consider this on main data.
 TBD

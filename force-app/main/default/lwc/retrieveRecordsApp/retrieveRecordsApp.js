@@ -50,7 +50,7 @@ export default class RetrieveRecordsApp extends NavigationMixin(LightningElement
             this.isError = false;
             this.errorMessage = '';
             this.configObject = this.buildConfigObject();
-            this.mainData = result.data;
+            this.mainData = this.processDataForParentReference(result.data, this.mainDataCols);
         } else if(result.status === ERROR_STATUS){
             this.isError = true;
             this.errorMessage = result.errorMessage;
@@ -99,10 +99,12 @@ export default class RetrieveRecordsApp extends NavigationMixin(LightningElement
     mapFields(fields){
         const actionsCol = { type: 'action', typeAttributes: { rowActions: ACTIONS, menuAlignment: 'auto' } }
         const tableCols = fields.map(field => {
+            const isParentField = field.includes('.');
             return {
                 label: field,
-                fieldName: field,
-                wrapText: true
+                fieldName: field.replaceAll('.', ''),
+                wrapText: true,
+                isParentField: isParentField
             }
         });
         return [...tableCols, actionsCol];
@@ -121,5 +123,26 @@ export default class RetrieveRecordsApp extends NavigationMixin(LightningElement
             }
         }
         this[NavigationMixin.Navigate](pageReference);
+    }
+    processDataForParentReference(data, cols){
+        const parentFields = cols.filter(col => col.isParentField) || []; // valid item example: { label: 'Account.Name', fieldName: 'AccountName', isParentField: true }
+        return data.map(record => {
+            const newRecord = { ...record };
+            if(parentFields.length > 0){
+                parentFields.forEach(parentField => {
+                    let cellValue;
+                    const singleFieldReferences = parentField.label.split('.'); // 1. Account.Name => ['Account', 'Name']
+                    singleFieldReferences.forEach((value, index) => {
+                        if(index === 0) {
+                            cellValue = newRecord[value]; // 2. cellValue = newRecord.Account
+                        } else {
+                            cellValue = cellValue[value]; // 3. cellValue = newRecord.Account.Name
+                        }
+                    });
+                    newRecord[parentField.fieldName] = cellValue; // 4. newRecord.AccountName = newRecord.Account.Name
+                });
+            }
+            return newRecord;
+        });
     }
 }
