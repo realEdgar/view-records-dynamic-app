@@ -106,3 +106,10 @@
         - includes actions to view and edit the record selected
 
 ## Build Completed
+---------------------------------------------------------------------------
+
+## Enhancements
+
+### Enhancement 1:
+- Show final query to the user in real time.
+    - once the user made an update on the query it shoul be reflected immediately

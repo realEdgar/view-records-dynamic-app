@@ -6,10 +6,10 @@
                     Build Query (SOQL)
                 </h1>
                 <form onsubmit={handleQuerySubmit}>
-                    <lightning-textarea name="fields" type="text" label="SELECT" onchange={handleChange} placeholder="e.g. Id, Name, ... , Status" required></lightning-textarea>
-                    <lightning-input name="SObjectApiName" type="text" label="FROM" onchange={handleChange}  placeholder="e.g. Account" required></lightning-input>
-                    <lightning-textarea name="filters" type="text" label="WHERE" onchange={handleChange} placeholder="e.g. Status = 'Closed'"></lightning-textarea>
-                    <lightning-input name="noRecords" type="number" label="LIMIT" onchange={handleChange} placeholder="e.g. 10"></lightning-input>
+                    <lightning-textarea name="fields" type="text" label="SELECT" onkeyup={handleKeyup} onchange={handleChange} placeholder="e.g. Id, Name, ... , Status" required></lightning-textarea>
+                    <lightning-input name="SObjectApiName" type="text" label="FROM" onkeyup={handleKeyup} onchange={handleChange}  placeholder="e.g. Account" required></lightning-input>
+                    <lightning-textarea name="filters" type="text" label="WHERE" onkeyup={handleKeyup} onchange={handleChange} placeholder="e.g. Status = 'Closed'"></lightning-textarea>
+                    <lightning-input name="noRecords" type="number" label="LIMIT" onkeyup={handleKeyup} onchange={handleChange} placeholder="e.g. 10"></lightning-input>
                     <template lwc:if={isError}>
                         <p class="slds-var-p-around_medium slds-text-color_error">
                             {errorMessage}
@@ -20,6 +20,17 @@
                     </div>
                 </form>
             </article>
+            <section class="slds-card slds-var-p-around_small slds-var-m-top_small slds-var-m-right_small">
+                <div style="font-size: 10px;">
+                    <code lwc:if={fields}><span class="slds-text-color_error">SELECT</span> {fields} </code>
+                    <code lwc:else><span class="slds-text-color_error">SELECT</span> --fields-- </code>
+                    <br>
+                    <code lwc:if={SObjectApiName}><span class="slds-text-color_error">FROM</span> {SObjectApiName} <br></code>
+                    <code lwc:else><span class="slds-text-color_error">FROM</span> --sObject-- <br></code>
+                    <code lwc:if={filters}><span class="slds-text-color_error">WHERE</span> {filters} <br></code>
+                    <code lwc:if={noRecords}><span class="slds-text-color_error">LIMIT</span> {noRecords} <br></code>
+                </div>
+            </section>
         </lightning-layout-item>
         <lightning-layout-item size="8">
             <template lwc:if={dataRequested}>

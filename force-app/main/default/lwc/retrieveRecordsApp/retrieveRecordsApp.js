@@ -31,6 +31,11 @@ export default class RetrieveRecordsApp extends NavigationMixin(LightningElement
         this[fieldName] = event.detail.value;
     }
 
+    handleKeyup(event){
+        const fieldName = event.target.name;
+        this[fieldName] = event.target.value;
+    }
+
     handleQuerySubmit(event){
         event.preventDefault();
         const params = {
